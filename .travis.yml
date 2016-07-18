@@ -1,19 +1,14 @@
 language: node_js
 
-before_install:
-  - npm install hexo -g
-
-install:
-  - npm install
-
-script:
-  - hexo generate
+node_js: node
 
 before_deploy:
-  -
+  - npm install hexo -g
+  - npm install
+  - hexo generate
 
-after_success:
-  - sudo apt-get install sshpass
-  - sshpass -p ilmolC6e ssh root@217.160.178.178 npm install hexo -g
-  - sshpass -p ilmolC6e ssh root@217.160.178.178 git clone https://github.com/spread-the-numbers/hexo_blog.git
-  - sshpass -p ilmolC6e ssh root@217.160.178.178 hexo generate && hexo deploy
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: master
